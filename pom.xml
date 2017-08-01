@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>api-financeiro</name>
-	<description>Demo project for Spring Boot</description>
+	<description>API RESTful about financeiro</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -43,6 +43,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
