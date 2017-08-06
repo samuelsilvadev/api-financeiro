@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,12 @@ public class CategoriaResource {
 	public ResponseEntity<?> findAll(){
 		 List<Categoria> listCat = categoriaRepository.findAll();
 		 return !listCat.isEmpty() ? ResponseEntity.ok(listCat) : ResponseEntity.noContent().build();  
+	}
+	
+	@GetMapping(value="/{id}")
+	public ResponseEntity<?> findById(@PathVariable final Long id){
+		 Categoria categoria = categoriaRepository.findOne(id);
+		 return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.noContent().build();  
 	}
 	
 }
