@@ -2,6 +2,7 @@ package com.samuelsilva.api.apifinanceiro.resource;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,8 +34,9 @@ public class CategoriaResource {
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<?> findById(@PathVariable final Long id){
-		 Categoria categoria = categoriaRepository.findOne(id);
-		 return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.noContent().build();  
+		 return Optional.ofNullable(categoriaRepository.findOne(id))
+				 .map(c -> ResponseEntity.ok(c))
+				 .orElseGet(() -> ResponseEntity.notFound().build());  
 	}
 	
 	@PostMapping
