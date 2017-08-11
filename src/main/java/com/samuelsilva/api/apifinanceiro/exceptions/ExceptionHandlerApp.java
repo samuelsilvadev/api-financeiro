@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,14 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import lombok.Getter;
 
 @ControllerAdvice
-public class ExceptionHandler extends ResponseEntityExceptionHandler{
+public class ExceptionHandlerApp extends ResponseEntityExceptionHandler{
 
 	@Autowired
 	private MessageSource message;
@@ -50,6 +52,14 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 			erros.add(new Erro(mensagemUsuario, mensagemDoDev));
 		});
 		return erros;
+	}
+	
+	@ExceptionHandler({EmptyResultDataAccessException.class })
+	public ResponseEntity<?> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
+		String mensagemUsuario = message.getMessage("mensagem.nao-encontrado", null, LocaleContextHolder.getLocale());                                   
+		String mensagemDoDev = ex.toString();        
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDoDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
 	static class Erro{
