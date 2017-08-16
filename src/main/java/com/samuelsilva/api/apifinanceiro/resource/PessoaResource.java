@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.samuelsilva.api.apifinanceiro.event.RecursoCriadoEvent;
 import com.samuelsilva.api.apifinanceiro.model.Pessoa;
 import com.samuelsilva.api.apifinanceiro.repository.PessoaRepository;
+import com.samuelsilva.api.apifinanceiro.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -32,6 +34,9 @@ public class PessoaResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private PessoaService pessoaService;
 		
 	@GetMapping
 	public ResponseEntity<?> findAll(){
@@ -58,4 +63,10 @@ public class PessoaResource {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, newPessoa.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(newPessoa);		
 	}	
+	
+	@PutMapping("/{codigo}")
+	public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa){
+		Pessoa pessoaSalva = pessoaService.update(id, pessoa);
+		return ResponseEntity.ok(pessoaSalva);
+	}
 }
