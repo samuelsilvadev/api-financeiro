@@ -46,7 +46,7 @@ public class PessoaResource {
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<?> findById(@PathVariable final Long id){
-		 return Optional.ofNullable(pessoaRepository.findOne(id))
+		 return Optional.ofNullable(pessoaService.findPessoaByCodigo(id))
 				 .map(c -> ResponseEntity.ok(c))
 				 .orElseGet(() -> ResponseEntity.notFound().build());  
 	}
@@ -68,5 +68,11 @@ public class PessoaResource {
 	public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa){
 		Pessoa pessoaSalva = pessoaService.update(id, pessoa);
 		return ResponseEntity.ok(pessoaSalva);
+	}
+	
+	@PutMapping(value="/{id}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updatePropAtivo(@PathVariable Long id, @RequestBody Boolean ativo){
+		pessoaService.updatePropAtivo(id, ativo);		
 	}
 }
