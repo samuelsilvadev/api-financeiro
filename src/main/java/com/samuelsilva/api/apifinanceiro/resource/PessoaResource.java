@@ -64,7 +64,7 @@ public class PessoaResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(newPessoa);		
 	}	
 	
-	@PutMapping("/{codigo}")
+	@PutMapping(value="/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa){
 		Pessoa pessoaSalva = pessoaService.update(id, pessoa);
 		return ResponseEntity.ok(pessoaSalva);
