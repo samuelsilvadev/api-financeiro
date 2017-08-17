@@ -72,7 +72,7 @@ public class PessoaResource {
 	
 	@PutMapping(value="/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updatePropAtivo(@PathVariable Long id, @RequestBody Boolean ativo){
+	public void updatePropAtivo(@PathVariable Long id, @Valid @RequestBody Boolean ativo){
 		pessoaService.updatePropAtivo(id, ativo);		
 	}
 }
