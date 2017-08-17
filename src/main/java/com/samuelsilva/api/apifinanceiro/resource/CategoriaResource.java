@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.samuelsilva.api.apifinanceiro.event.RecursoCriadoEvent;
 import com.samuelsilva.api.apifinanceiro.model.Categoria;
 import com.samuelsilva.api.apifinanceiro.repository.CategoriaRepository;
+import com.samuelsilva.api.apifinanceiro.service.CategoriaService;
 
 @RestController
 @RequestMapping("/categorias")
@@ -27,6 +29,9 @@ public class CategoriaResource {
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	
+	@Autowired
+	private CategoriaService categoriaService;
 			
 	@Autowired
 	private ApplicationEventPublisher publisher;	
@@ -48,6 +53,12 @@ public class CategoriaResource {
 	public ResponseEntity<?> save(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
 		Categoria newCat = categoriaRepository.save(categoria);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, newCat.getCodigo()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(newCat);		
+	}	
+	
+	@PutMapping(value="/{id}")
+	public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria){
+		Categoria newCat = categoriaService.update(id, categoria);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newCat);		
 	}	
 }
