@@ -15,6 +15,11 @@ public class LancamentoService {
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
 	
+	public Lancamento save(Lancamento lancamento){
+		Lancamento newlancamento = lancamentoRepository.save(lancamento);
+		return newlancamento;
+	}	
+	
 	public Lancamento findLancamentoByCodigo(Long id) {
 		Lancamento lancamentoSalvo = lancamentoRepository.findOne(id);
 		if(lancamentoSalvo == null)

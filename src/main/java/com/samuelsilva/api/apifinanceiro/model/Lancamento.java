@@ -33,6 +33,7 @@ public class Lancamento {
 	@Getter @Setter	
 	private String descricao;	
 	
+	@NotNull
 	@Column(name="data_vencimento")
 	@Getter @Setter
 	private LocalDate dataVencimento;
