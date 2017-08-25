@@ -57,7 +57,7 @@ public class Lancamento {
 	private Categoria categoria;
 	
 	@ManyToOne
-	@JoinColumn(name="pessoa_categoria")
+	@JoinColumn(name="codigo_pessoa")
 	@Getter @Setter
 	private Pessoa pessoa;	
 }
