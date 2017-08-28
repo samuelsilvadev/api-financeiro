@@ -42,21 +42,25 @@ public class Lancamento {
 	@Getter @Setter
 	private LocalDate dataPagamento;
 	
+	@NotNull
 	@Getter @Setter
 	private BigDecimal valor;
 	
 	@Getter @Setter
 	private String observacao;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Getter @Setter
 	private TipoLancamento tipo;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="codigo_categoria")
 	@Getter @Setter
 	private Categoria categoria;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="codigo_pessoa")
 	@Getter @Setter
