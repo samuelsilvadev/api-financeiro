@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.StringUtils;
 
 import com.samuelsilva.api.apifinanceiro.model.Lancamento;
+import com.samuelsilva.api.apifinanceiro.model.Lancamento_;
 import com.samuelsilva.api.apifinanceiro.repository.filters.LancamentoFilter;
 
 public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
@@ -29,6 +30,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 		Root<Lancamento> root = criteria.from(Lancamento.class);
 		
 		Predicate[] predicates = criarPredicates(lancamentoFilter, builder, root);
+		criteria.where(predicates);
 		
 		TypedQuery<Lancamento> query = manager.createQuery(criteria);
 		return query.getResultList();
@@ -54,8 +56,6 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 					builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getDataVencimentoAte()));
 		}
 		
-		return predicates.toArray(new Predicate[predicates.size()]);
-		return null;
+		return predicates.toArray(new Predicate[predicates.size()]);		
 	}
-
 }

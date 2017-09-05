@@ -38,17 +38,10 @@ public class LancamentoResource {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, newLanc.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(newLanc);		
 	}	
-	
-	@GetMapping
-	public ResponseEntity<?> findAll(){
-		 List<Lancamento> listLancamento = lancamentoService.findAll();
-		 return listLancamento != null && !listLancamento.isEmpty() ? 
-				 ResponseEntity.ok(listLancamento) : ResponseEntity.noContent().build();  
-	}
-	
+
 	@GetMapping
 	public ResponseEntity<?> findByFilters(LancamentoFilter lancamentoFilter){
-		 List<Lancamento> listLancamento = lancamentoService.findAll();
+		 List<Lancamento> listLancamento = lancamentoService.findByManyFilters(lancamentoFilter);
 		 return listLancamento != null && !listLancamento.isEmpty() ? 
 				 ResponseEntity.ok(listLancamento) : ResponseEntity.noContent().build();  
 	}

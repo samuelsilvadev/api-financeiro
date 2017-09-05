@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.samuelsilva.api.apifinanceiro.model.Lancamento;
 import com.samuelsilva.api.apifinanceiro.model.Pessoa;
 import com.samuelsilva.api.apifinanceiro.repository.LancamentoRepository;
+import com.samuelsilva.api.apifinanceiro.repository.filters.LancamentoFilter;
 import com.samuelsilva.api.apifinanceiro.service.exceptions.PessoaInexistenteException;
 
 @Service
@@ -38,6 +39,13 @@ public class LancamentoService {
 	
 	public List<Lancamento> findAll() {
 		List<Lancamento> findAll = lancamentoRepository.findAll();
+		if(findAll == null)
+			throw new EmptyResultDataAccessException(1);
+		return findAll;
+	}
+	
+	public List<Lancamento> findByManyFilters(LancamentoFilter lancamentoFilter) {
+		List<Lancamento> findAll = lancamentoRepository.filterBy(lancamentoFilter);
 		if(findAll == null)
 			throw new EmptyResultDataAccessException(1);
 		return findAll;
