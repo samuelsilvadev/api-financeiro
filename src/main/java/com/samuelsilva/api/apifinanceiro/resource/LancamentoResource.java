@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.samuelsilva.api.apifinanceiro.event.RecursoCriadoEvent;
 import com.samuelsilva.api.apifinanceiro.model.Lancamento;
+import com.samuelsilva.api.apifinanceiro.repository.filters.LancamentoFilter;
 import com.samuelsilva.api.apifinanceiro.service.LancamentoService;
 
 @RestController
@@ -40,6 +41,13 @@ public class LancamentoResource {
 	
 	@GetMapping
 	public ResponseEntity<?> findAll(){
+		 List<Lancamento> listLancamento = lancamentoService.findAll();
+		 return listLancamento != null && !listLancamento.isEmpty() ? 
+				 ResponseEntity.ok(listLancamento) : ResponseEntity.noContent().build();  
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> findByFilters(LancamentoFilter lancamentoFilter){
 		 List<Lancamento> listLancamento = lancamentoService.findAll();
 		 return listLancamento != null && !listLancamento.isEmpty() ? 
 				 ResponseEntity.ok(listLancamento) : ResponseEntity.noContent().build();  
