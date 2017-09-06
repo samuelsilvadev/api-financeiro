@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.samuelsilva.api.apifinanceiro.service.exceptions.PessoaInexistenteException;
+
 import lombok.Getter;
 
 @ControllerAdvice
@@ -67,6 +69,14 @@ public class ExceptionHandlerApp extends ResponseEntityExceptionHandler{
 	@ExceptionHandler({DataIntegrityViolationException.class })
 	public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
 		String mensagemUsuario = message.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());                                   
+		String mensagemDoDev = ExceptionUtils.getRootCauseMessage(ex);        
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDoDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+	
+	@ExceptionHandler({PessoaInexistenteException.class })
+	public ResponseEntity<?> handlePessoaInexistenteException(PessoaInexistenteException ex, WebRequest request) {
+		String mensagemUsuario = message.getMessage("lancamento.pessoa.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());                                   
 		String mensagemDoDev = ExceptionUtils.getRootCauseMessage(ex);        
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDoDev));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
