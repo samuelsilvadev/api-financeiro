@@ -30,6 +30,11 @@ public class LancamentoService {
 		return newlancamento;		
 	}	
 	
+	public void delete(Long codigoDoLancamento){
+		Lancamento lancamento = findLancamentoByCodigo(codigoDoLancamento);
+		lancamentoRepository.delete(lancamento.getCodigo());		
+	}
+	
 	public Lancamento findLancamentoByCodigo(Long id) {
 		Lancamento lancamentoSalvo = lancamentoRepository.findOne(id);
 		if(lancamentoSalvo == null)
