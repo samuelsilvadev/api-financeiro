@@ -1,6 +1,5 @@
 package com.samuelsilva.api.apifinanceiro.resource;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,9 +49,9 @@ public class LancamentoResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> findByFilters(LancamentoFilter lancamentoFilter){
-		 List<Lancamento> listLancamento = lancamentoService.findByManyFilters(lancamentoFilter);
-		 return listLancamento != null && !listLancamento.isEmpty() ? 
+	public ResponseEntity<?> findByFilters(LancamentoFilter lancamentoFilter, Pageable pageable){
+		 Page<Lancamento> listLancamento = lancamentoService.findByManyFilters(lancamentoFilter, pageable);
+		 return listLancamento != null ? 
 				 ResponseEntity.ok(listLancamento) : ResponseEntity.noContent().build();  
 	}
 	

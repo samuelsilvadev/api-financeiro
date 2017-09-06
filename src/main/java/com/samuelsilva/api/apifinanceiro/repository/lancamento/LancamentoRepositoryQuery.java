@@ -1,13 +1,13 @@
 package com.samuelsilva.api.apifinanceiro.repository.lancamento;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.samuelsilva.api.apifinanceiro.model.Lancamento;
-
-import java.util.List;
-
 import com.samuelsilva.api.apifinanceiro.repository.filters.LancamentoFilter;
 
 public interface LancamentoRepositoryQuery {
 	
-	public List<Lancamento> filterBy(LancamentoFilter lancamentoFilter);
+	public Page<Lancamento> filterBy(LancamentoFilter lancamentoFilter, Pageable pageable);
 
 }

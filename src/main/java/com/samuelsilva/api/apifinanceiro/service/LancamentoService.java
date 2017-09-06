@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.samuelsilva.api.apifinanceiro.model.Lancamento;
@@ -49,8 +51,8 @@ public class LancamentoService {
 		return findAll;
 	}
 	
-	public List<Lancamento> findByManyFilters(LancamentoFilter lancamentoFilter) {
-		List<Lancamento> findAll = lancamentoRepository.filterBy(lancamentoFilter);
+	public Page<Lancamento> findByManyFilters(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		Page<Lancamento> findAll = lancamentoRepository.filterBy(lancamentoFilter, pageable);
 		if(findAll == null)
 			throw new EmptyResultDataAccessException(1);
 		return findAll;
