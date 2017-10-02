@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,12 +38,14 @@ public class CategoriaResource {
 	private ApplicationEventPublisher publisher;	
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
 	public ResponseEntity<?> findAll(){
 		 List<Categoria> listCat = categoriaRepository.findAll();
 		 return !listCat.isEmpty() ? ResponseEntity.ok(listCat) : ResponseEntity.noContent().build();  
 	}
 	
 	@GetMapping(value="/{id}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")	
 	public ResponseEntity<?> findById(@PathVariable final Long id){
 		 return Optional.ofNullable(categoriaRepository.findOne(id))
 				 .map(c -> ResponseEntity.ok(c))
@@ -50,6 +53,7 @@ public class CategoriaResource {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA')")
 	public ResponseEntity<?> save(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
 		Categoria newCat = categoriaRepository.save(categoria);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, newCat.getCodigo()));
