@@ -12,6 +12,7 @@ import com.samuelsilva.api.apifinanceiro.model.Lancamento;
 import com.samuelsilva.api.apifinanceiro.model.Pessoa;
 import com.samuelsilva.api.apifinanceiro.repository.LancamentoRepository;
 import com.samuelsilva.api.apifinanceiro.repository.filters.LancamentoFilter;
+import com.samuelsilva.api.apifinanceiro.repository.projection.ResumoLancamento;
 import com.samuelsilva.api.apifinanceiro.service.exceptions.PessoaInexistenteException;
 
 @Service
@@ -53,6 +54,13 @@ public class LancamentoService {
 	
 	public Page<Lancamento> findByManyFilters(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		Page<Lancamento> findAll = lancamentoRepository.filterBy(lancamentoFilter, pageable);
+		if(findAll == null)
+			throw new EmptyResultDataAccessException(1);
+		return findAll;
+	}
+	
+	public Page<ResumoLancamento> resume(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		Page<ResumoLancamento> findAll = lancamentoRepository.resume(lancamentoFilter, pageable);
 		if(findAll == null)
 			throw new EmptyResultDataAccessException(1);
 		return findAll;

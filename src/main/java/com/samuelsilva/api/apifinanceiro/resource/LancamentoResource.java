@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.samuelsilva.api.apifinanceiro.event.RecursoCriadoEvent;
 import com.samuelsilva.api.apifinanceiro.model.Lancamento;
 import com.samuelsilva.api.apifinanceiro.repository.filters.LancamentoFilter;
+import com.samuelsilva.api.apifinanceiro.repository.projection.ResumoLancamento;
 import com.samuelsilva.api.apifinanceiro.service.LancamentoService;
 
 @RestController
@@ -58,6 +59,12 @@ public class LancamentoResource {
 		 return listLancamento != null ? 
 				 ResponseEntity.ok(listLancamento) : ResponseEntity.noContent().build();  
 	}
+	
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		return lancamentoService.resume(lancamentoFilter, pageable);
+	}	
 	
 	@GetMapping(value="/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
